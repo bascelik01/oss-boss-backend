@@ -1,8 +1,16 @@
 from django.contrib import admin
-# import your models here
-from .models import Cat, Feeding, Toy
 
-# Register your models here
-admin.site.register(Cat)
-admin.site.register(Feeding)
-admin.site.register(Toy)
+from .models import Category, Technique
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
+
+
+@admin.register(Technique)
+class TechniqueAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'user', 'category', 'created_at')
+    list_filter = ('category', 'user')
+    search_fields = ('name', 'description')

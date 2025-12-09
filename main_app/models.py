@@ -1,48 +1,26 @@
 from django.db import models
-from datetime import date
-
 from django.contrib.auth.models import User
 
-MEALS = (
-    ('B', 'Breakfast'),
-    ('L', 'Lunch'),
-    ('D', 'Dinner')
-)
 
-class Toy(models.Model):
-    name = models.CharField(max_length=50)
-    colour = models.CharField(max_length=20)
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-class Cat(models.Model):
-    name = models.CharField(max_length=100)
-    breed = models.CharField(max_length=100)
-    description = models.TextField(max_length=250)
-    age = models.IntegerField()
-    toys = models.ManyToManyField(Toy)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
-
-    def fed_for_today(self):
-        return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
-
-
-class Feeding(models.Model):
-    date = models.DateField('Feeding Date')
-    meal = models.CharField(
-        max_length = 1,
-        choices=MEALS,
-        default=MEALS[0][0])
-    cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return f"{self.get_meal_display()} on {self.date}"
+class Technique(models.Model):
+    name = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='techniques')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='techniques')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['-created_at']
+
+    def __str__(self) -> str:
+        return self.name
 
 

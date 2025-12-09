@@ -1,5 +1,5 @@
-CREATE DATABASE catcollector;
+CREATE DATABASE techniqueCollector;
 
-CREATE USER cat_admin WITH PASSWORD 'password';
+CREATE USER technique_admin WITH PASSWORD 'password';
 
-GRANT ALL PRIVILEGES ON DATABASE catcollector TO cat_admin;
+GRANT ALL PRIVILEGES ON DATABASE techniqueCollector TO technique_admin;
